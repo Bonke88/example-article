@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-ivory text-ink font-sans;
+  }
+}
+
+@layer components {
+  .article-content h2 {
+    @apply text-2xl md:text-3xl font-bold mt-12 mb-4 pb-2 border-b border-border;
+  }
+
+  .article-content h3 {
+    @apply text-xl md:text-2xl font-semibold mt-8 mb-3;
+  }
+
+  .article-content p {
+    @apply text-base md:text-lg leading-relaxed mb-4 text-ink-light;
+  }
+
+  .article-content ul, .article-content ol {
+    @apply mb-4 pl-6 space-y-2;
+  }
+
+  .article-content li {
+    @apply text-base md:text-lg leading-relaxed text-ink-light;
+  }
+
+  .article-content a {
+    @apply text-accent underline underline-offset-2 hover:text-accent-hover transition-colors;
+  }
+
+  .article-content strong {
+    @apply text-ink font-semibold;
+  }
+
+  .article-content blockquote {
+    @apply border-l-4 border-accent pl-4 py-2 my-6 bg-blue-50/50 rounded-r-lg;
+  }
+
+  .article-content blockquote p {
+    @apply text-ink-light italic;
+  }
+
+  .article-content table {
+    @apply w-full my-6 text-sm md:text-base border-collapse;
+  }
+
+  .article-content thead {
+    @apply bg-gray-100;
+  }
+
+  .article-content th {
+    @apply px-4 py-3 text-left font-semibold text-ink border-b-2 border-border;
+  }
+
+  .article-content td {
+    @apply px-4 py-3 border-b border-border text-ink-light;
+  }
+
+  .article-content tbody tr:hover {
+    @apply bg-gray-50;
+  }
+
+  .article-content hr {
+    @apply my-8 border-border;
+  }
+
+  .article-content code {
+    @apply bg-gray-100 text-ink text-sm px-1.5 py-0.5 rounded;
+  }
+
+  .article-content pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg my-6 overflow-x-auto;
+  }
+
+  .article-content pre code {
+    @apply bg-transparent text-gray-100 p-0;
+  }
+}

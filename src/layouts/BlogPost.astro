@@ -1,0 +1,149 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  author: string;
+  publishDate: Date;
+  lastUpdated?: Date;
+  category?: string;
+  tags?: string[];
+  difficulty?: string;
+  timeToImplement?: number;
+}
+
+const { title, description, author, publishDate, lastUpdated, category, tags, difficulty, timeToImplement } = Astro.props;
+
+const formattedDate = publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const updatedDate = lastUpdated?.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Estimate read time from slot content
+const readTime = Math.ceil((Astro.props as any).readTime || 15);
+---
+
+<Layout title={`${title} | RainMaker Blog`} description={description}>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="mb-8" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-sm text-ink-muted">
+        <li><a href="/" class="hover:text-accent transition-colors">Home</a></li>
+        <li class="flex items-center gap-2">
+          <span>/</span>
+          <a href="/blog" class="hover:text-accent transition-colors">Blog</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <span>/</span>
+          <span class="text-ink font-medium truncate max-w-[200px] sm:max-w-none">{title}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Article Header -->
+    <header class="mb-10">
+      {category && (
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-accent bg-blue-50 px-3 py-1 rounded-full mb-4">
+          {category}
+        </span>
+      )}
+
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-ink leading-tight mb-6">
+        {title}
+      </h1>
+
+      <p class="text-lg md:text-xl text-ink-muted leading-relaxed mb-6">
+        {description}
+      </p>
+
+      <!-- Meta row -->
+      <div class="flex flex-wrap items-center gap-4 text-sm text-ink-muted border-t border-b border-border py-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-accent/10 rounded-full flex items-center justify-center">
+            <span class="text-accent font-semibold text-xs">{author.charAt(0)}</span>
+          </div>
+          <span class="font-medium text-ink">{author}</span>
+        </div>
+
+        <span class="text-border">|</span>
+
+        <time datetime={publishDate.toISOString()}>
+          {formattedDate}
+        </time>
+
+        <span class="text-border">|</span>
+
+        <span>{readTime} min read</span>
+
+        {difficulty && (
+          <>
+            <span class="text-border">|</span>
+            <span class="capitalize">{difficulty}</span>
+          </>
+        )}
+
+        {timeToImplement && (
+          <>
+            <span class="text-border">|</span>
+            <span>{timeToImplement} min to implement</span>
+          </>
+        )}
+      </div>
+
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {tags.map(tag => (
+            <span class="text-xs font-medium text-ink-muted bg-gray-100 px-2.5 py-1 rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <!-- Article Body -->
+    <div class="article-content">
+      <slot />
+    </div>
+
+    <!-- Article Footer -->
+    <footer class="mt-16 pt-8 border-t border-border">
+      <div class="bg-gray-50 rounded-xl p-6 md:p-8">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-lg">R</span>
+          </div>
+          <div>
+            <h3 class="font-bold text-ink text-lg mb-1">RainMaker Ad Ventures</h3>
+            <p class="text-ink-muted text-sm leading-relaxed">
+              Performance marketing and media buying agency with $250M+ in cumulative media buying experience.
+              7x Inc. 5000 honoree. Specializing in email, native, video, and display advertising at scale.
+            </p>
+            <a
+              href="https://rainmakeradventures.com"
+              target="_blank"
+              rel="noopener"
+              class="inline-block mt-3 text-sm font-medium text-accent hover:text-accent-hover transition-colors"
+            >
+              Learn more &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {updatedDate && updatedDate !== formattedDate && (
+        <p class="text-sm text-ink-muted mt-6">
+          Last updated: {updatedDate}
+        </p>
+      )}
+    </footer>
+  </article>
+</Layout>

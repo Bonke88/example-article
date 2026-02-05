@@ -1,0 +1,70 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Blog articles and guides' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-ivory/80 backdrop-blur-md border-b border-border">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="/" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+              <span class="text-white font-bold text-sm">R</span>
+            </div>
+            <span class="font-bold text-lg text-ink group-hover:text-accent transition-colors">RainMaker</span>
+          </a>
+          <nav class="flex items-center gap-6">
+            <a href="/blog" class="text-sm font-medium text-ink-muted hover:text-ink transition-colors">Blog</a>
+            <a href="https://rainmakeradventures.com" target="_blank" rel="noopener" class="text-sm font-medium text-white bg-accent hover:bg-accent-hover px-4 py-2 rounded-lg transition-colors">
+              Visit Site
+            </a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border bg-ivory">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 bg-accent rounded flex items-center justify-center">
+              <span class="text-white font-bold text-xs">R</span>
+            </div>
+            <span class="font-semibold text-ink">RainMaker Ad Ventures</span>
+          </div>
+          <p class="text-sm text-ink-muted">
+            &copy; {new Date().getFullYear()} RainMaker Ad Ventures. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

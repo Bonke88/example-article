@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<Layout title="Blog | RainMaker Ad Ventures" description="Insights on performance marketing, email scaling, media buying, and digital advertising from RainMaker Ad Ventures.">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <!-- Page Header -->
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-ink mb-4">Blog</h1>
+      <p class="text-lg text-ink-muted max-w-2xl">
+        Performance marketing insights, email scaling strategies, and media buying expertise
+        from the team behind $250M+ in managed ad spend.
+      </p>
+    </div>
+
+    <!-- Post Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {posts.map((post) => {
+        const readTime = Math.ceil(post.body.split(/\s+/).length / 200);
+        return (
+          <a href={`/blog/${post.slug}`} class="group">
+            <article class="h-full flex flex-col bg-white rounded-xl border border-border p-6 hover:border-accent/30 hover:shadow-lg transition-all duration-200">
+              {post.data.category && (
+                <span class="inline-block self-start text-xs font-semibold uppercase tracking-wider text-accent bg-blue-50 px-2.5 py-1 rounded-full mb-3">
+                  {post.data.category}
+                </span>
+              )}
+
+              <h2 class="text-lg font-bold text-ink group-hover:text-accent transition-colors mb-2 line-clamp-2">
+                {post.data.title}
+              </h2>
+
+              <p class="text-sm text-ink-muted line-clamp-2 mb-4 flex-1">
+                {post.data.description}
+              </p>
+
+              <div class="flex items-center gap-3 text-xs text-ink-muted pt-4 border-t border-border">
+                <span>{post.data.author}</span>
+                <span class="text-border">|</span>
+                <time datetime={post.data.publishDate.toISOString()}>
+                  {post.data.publishDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                <span class="text-border">|</span>
+                <span>{readTime} min read</span>
+              </div>
+            </article>
+          </a>
+        );
+      })}
+    </div>
+
+    {posts.length === 0 && (
+      <div class="text-center py-16">
+        <p class="text-ink-muted text-lg">No posts yet. Check back soon!</p>
+      </div>
+    )}
+  </div>
+</Layout>
