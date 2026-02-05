@@ -6,60 +6,68 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 ---
 
-<Layout title="Blog | RainMaker Ad Ventures" description="Insights on performance marketing, email scaling, media buying, and digital advertising from RainMaker Ad Ventures.">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-    <!-- Page Header -->
-    <div class="mb-12">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-ink mb-4">Blog</h1>
-      <p class="text-lg text-ink-muted max-w-2xl">
-        Performance marketing insights, email scaling strategies, and media buying expertise
-        from the team behind $250M+ in managed ad spend.
+<Layout title="Blog | RainMaker Ad Ventures" description="Expert insights on performance marketing, email scaling, and media buying strategies.">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Hero Section -->
+    <div class="text-center py-16 md:py-24">
+      <div class="w-16 h-1 bg-cited-blue mx-auto mb-8"></div>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-950-ink mb-6 tracking-tight">
+        Insights & Resources
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Expert insights on performance marketing, email scaling, and media buying strategies
+        to help you scale campaigns profitably.
       </p>
     </div>
 
     <!-- Post Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {posts.map((post) => {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
+      {posts.map((post, index) => {
         const readTime = Math.ceil(post.body.split(/\s+/).length / 200);
+        const isFeatured = index === 0;
         return (
-          <a href={`/blog/${post.slug}`} class="group">
-            <article class="h-full flex flex-col bg-white rounded-xl border border-border p-6 hover:border-accent/30 hover:shadow-lg transition-all duration-200">
-              {post.data.category && (
-                <span class="inline-block self-start text-xs font-semibold uppercase tracking-wider text-accent bg-blue-50 px-2.5 py-1 rounded-full mb-3">
-                  {post.data.category}
-                </span>
-              )}
+          <article class={`group ${isFeatured ? 'md:col-span-2 lg:col-span-2' : ''}`}>
+            <a href={`/blog/${post.slug}`} class="block">
+              <div class="space-y-3">
+                {post.data.category && (
+                  <span class="inline-block text-sm px-3 py-1 bg-cited-blue/10 text-cited-blue rounded-full font-medium">
+                    {post.data.category}
+                  </span>
+                )}
 
-              <h2 class="text-lg font-bold text-ink group-hover:text-accent transition-colors mb-2 line-clamp-2">
-                {post.data.title}
-              </h2>
+                <h2
+                  class={`font-bold text-gray-950-ink group-hover:text-cited-blue transition-colors duration-200 line-clamp-2 ${
+                    isFeatured ? 'text-2xl md:text-3xl leading-tight' : 'text-xl leading-snug'
+                  }`}
+                >
+                  {post.data.title}
+                </h2>
 
-              <p class="text-sm text-ink-muted line-clamp-2 mb-4 flex-1">
-                {post.data.description}
-              </p>
+                <p class="text-gray-600 line-clamp-2 leading-relaxed">
+                  {post.data.description}
+                </p>
 
-              <div class="flex items-center gap-3 text-xs text-ink-muted pt-4 border-t border-border">
-                <span>{post.data.author}</span>
-                <span class="text-border">|</span>
-                <time datetime={post.data.publishDate.toISOString()}>
-                  {post.data.publishDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
-                <span class="text-border">|</span>
-                <span>{readTime} min read</span>
+                <div class="flex items-center gap-4 text-sm text-gray-500 pt-1">
+                  <span class="font-medium text-gray-700">{post.data.author}</span>
+                  <span>
+                    {post.data.publishDate.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                  <span>{readTime} min read</span>
+                </div>
               </div>
-            </article>
-          </a>
+            </a>
+          </article>
         );
       })}
     </div>
 
     {posts.length === 0 && (
       <div class="text-center py-16">
-        <p class="text-ink-muted text-lg">No posts yet. Check back soon!</p>
+        <p class="text-gray-500 text-lg">No posts yet. Check back soon!</p>
       </div>
     )}
   </div>

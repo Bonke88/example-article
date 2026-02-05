@@ -2,9 +2,11 @@
 interface Props {
   title: string;
   description?: string;
+  ogType?: string;
+  publishedTime?: string;
 }
 
-const { title, description = 'Blog articles and guides' } = Astro.props;
+const { title, description = 'Insights on performance marketing and media buying', ogType = 'website', publishedTime } = Astro.props;
 ---
 
 <!doctype html>
@@ -16,28 +18,29 @@ const { title, description = 'Blog articles and guides' } = Astro.props;
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col bg-gray-50-ivory text-gray-950-ink font-sans">
     <!-- Header -->
-    <header class="sticky top-0 z-50 bg-ivory/80 backdrop-blur-md border-b border-border">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <a href="/" class="flex items-center gap-2 group">
-            <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-              <span class="text-white font-bold text-sm">R</span>
+    <header class="sticky top-0 z-[100] bg-gray-50-ivory/80 backdrop-blur-md border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between" style="height: 5.75rem;">
+          <a href="/" class="flex items-center gap-3 group">
+            <div class="w-9 h-9 bg-cited-blue rounded-lg flex items-center justify-center shadow-sm">
+              <span class="text-white font-bold text-base">R</span>
             </div>
-            <span class="font-bold text-lg text-ink group-hover:text-accent transition-colors">RainMaker</span>
+            <span class="font-bold text-xl text-gray-950-ink group-hover:text-cited-blue transition-colors tracking-tight">RainMaker</span>
           </a>
-          <nav class="flex items-center gap-6">
-            <a href="/blog" class="text-sm font-medium text-ink-muted hover:text-ink transition-colors">Blog</a>
-            <a href="https://rainmakeradventures.com" target="_blank" rel="noopener" class="text-sm font-medium text-white bg-accent hover:bg-accent-hover px-4 py-2 rounded-lg transition-colors">
+          <nav class="flex items-center gap-8">
+            <a href="/blog" class="text-sm font-medium text-gray-600 hover:text-gray-950-ink transition-colors">Blog</a>
+            <a href="https://rainmakeradventures.com" target="_blank" rel="noopener" class="text-sm font-medium text-white bg-gray-950-ink hover:bg-gray-800 px-5 py-2.5 rounded-full transition-colors">
               Visit Site
             </a>
           </nav>
@@ -50,17 +53,47 @@ const { title, description = 'Blog articles and guides' } = Astro.props;
       <slot />
     </main>
 
+    <!-- Newsletter Section -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gray-950-ink rounded-2xl p-8 md:p-12 text-center">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-50-ivory mb-4">Stay Updated</h2>
+          <p class="text-gray-400 mb-8 max-w-md mx-auto">
+            Get the latest performance marketing insights, email scaling strategies, and industry data delivered to your inbox.
+          </p>
+          <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onsubmit="return false;">
+            <input
+              type="email"
+              class="flex-1 px-4 py-3 rounded-full bg-gray-800 border border-gray-700 text-gray-50-ivory placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cited-blue"
+              placeholder="Enter your email"
+            />
+            <button
+              type="submit"
+              class="px-6 py-3 bg-gray-50-ivory text-gray-950-ink font-medium rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+            >
+              Subscribe
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <!-- Footer -->
-    <footer class="border-t border-border bg-ivory">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 bg-accent rounded flex items-center justify-center">
+    <footer class="border-t border-gray-200 bg-gray-50-ivory">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 bg-cited-blue rounded-lg flex items-center justify-center">
               <span class="text-white font-bold text-xs">R</span>
             </div>
-            <span class="font-semibold text-ink">RainMaker Ad Ventures</span>
+            <span class="font-semibold text-gray-950-ink">RainMaker Ad Ventures</span>
           </div>
-          <p class="text-sm text-ink-muted">
+          <div class="flex items-center gap-6 text-sm text-gray-500">
+            <a href="https://rainmakeradventures.com" target="_blank" rel="noopener" class="hover:text-gray-950-ink transition-colors">Website</a>
+            <a href="/blog" class="hover:text-gray-950-ink transition-colors">Blog</a>
+          </div>
+          <p class="text-sm text-gray-500">
             &copy; {new Date().getFullYear()} RainMaker Ad Ventures. All rights reserved.
           </p>
         </div>
