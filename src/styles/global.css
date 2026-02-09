@@ -39,3 +39,10 @@
   background: #2563EB;
   transition: width 0.15s ease-out;
 }
+
+/* Responsive tables on mobile */
+#article-content table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}

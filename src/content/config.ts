@@ -16,6 +16,11 @@ const blog = defineCollection({
     useCase: z.string().optional(),
     difficulty: z.string().optional(),
     timeToImplement: z.number().optional(),
+    heroImage: z.string().optional(),
+    faqs: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })).optional(),
   }),
 });
 

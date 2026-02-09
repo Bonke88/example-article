@@ -1,5 +1,11 @@
 ---
 import Layout from './Layout.astro';
+import { generateArticleJsonLd, generateBreadcrumbJsonLd, generateFaqJsonLd } from '../lib/jsonld';
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
 
 interface Props {
   title: string;
@@ -12,18 +18,39 @@ interface Props {
   difficulty?: string;
   timeToImplement?: number;
   readTime?: number;
+  slug?: string;
+  heroImage?: string;
+  faqs?: FaqItem[];
 }
 
-const { title, description, author, publishDate, lastUpdated, category, tags, difficulty, timeToImplement, readTime = 15 } = Astro.props;
+const { title, description, author, publishDate, lastUpdated, category, tags, difficulty, timeToImplement, readTime = 15, slug = '', heroImage, faqs } = Astro.props;
 
 const formattedDate = publishDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+
+const articleJsonLd = generateArticleJsonLd({
+  title,
+  description,
+  slug,
+  author,
+  publishDate: publishDate.toISOString(),
+  lastUpdated: lastUpdated?.toISOString(),
+  heroImage,
+});
+
+const breadcrumbJsonLd = generateBreadcrumbJsonLd(title, slug);
+
+const faqJsonLd = faqs && faqs.length > 0 ? generateFaqJsonLd(faqs) : null;
 ---
 
-<Layout title={`${title} | RainMaker Blog`} description={description} ogType="article" publishedTime={publishDate.toISOString()}>
+<Layout title={`${title} | RainMaker Blog`} description={description} ogType="article" publishedTime={publishDate.toISOString()} ogImage={heroImage}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+
   <!-- Reading Progress Bar -->
   <div class="reading-progress" id="reading-progress">
     <div class="reading-progress-bar" id="reading-progress-bar"></div>

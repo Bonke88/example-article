@@ -29,6 +29,9 @@ const readTime = Math.ceil(wordCount / 200);
   difficulty={post.data.difficulty}
   timeToImplement={post.data.timeToImplement}
   readTime={readTime}
+  slug={post.slug}
+  heroImage={post.data.heroImage}
+  faqs={post.data.faqs}
 >
   <Content />
 </BlogPost>
